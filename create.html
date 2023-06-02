@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Poll</title>
+</head>
+<body>
+    <h1>Create Poll</h1>
+
+    <form id="createPollForm">
+        <label for="pollName">Poll Name:</label>
+        <input type="text" id="pollName" name="pollName" required>
+
+        <label for="pollOptions">Poll Options (comma-separated):</label>
+        <input type="text" id="pollOptions" name="pollOptions" required>
+
+        <input type="submit" value="Create Poll">
+    </form>
+
+    <script>
+        let polls;
+
+        // Check if polls exist in localStorage
+        const savedPolls = localStorage.getItem('polls');
+        if (savedPolls) {
+            polls = JSON.parse(savedPolls);
+        } else {
+            // Define an empty array if polls not found in localStorage
+            polls = [];
+        }
+
+        const createPollForm = document.getElementById("createPollForm");
+
+        createPollForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const pollNameInput = document.getElementById("pollName");
+            const pollOptionsInput = document.getElementById("pollOptions");
+
+            const pollName = pollNameInput.value;
+            const pollOptions = pollOptionsInput.value.split(",").map(option => option.trim());
+
+            const newPoll = {
+                name: pollName,
+                options: pollOptions,
+                votes: Array(pollOptions.length).fill(0)
+            };
+
+            polls.push(newPoll);
+            localStorage.setItem('polls', JSON.stringify(polls));
+
+            pollNameInput.value = "";
+            pollOptionsInput.value = "";
+
+            alert("Poll created successfully!");
+
+            // Redirect back to the vote page
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

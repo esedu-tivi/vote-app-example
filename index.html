@@ -1,91 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Vote Page</title>
-    <style>
-        /* Add your custom CSS styles here */
-    </style>
+    <title>Poll Voting App</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Vote Page</h1>
+    <div class="container">
+        <h1>Poll Voting App</h1>
+        <div id="pollsContainer"></div>
+    </div>
 
-    <div id="pollsContainer"></div>
-
-    <a href="create.html">Create New Poll</a>
-
-    <script>
-        // Check if polls exist in localStorage
-        let polls = localStorage.getItem('polls');
-        if (polls) {
-            polls = JSON.parse(polls);
-        } else {
-            // Define an array of poll objects if not found in localStorage
-            polls = [
-                {
-                    name: "Poll 1",
-                    options: ["Option 1", "Option 2", "Option 3"],
-                    votes: Array(3).fill(0) // Initialize votes array with zeros
-                },
-                {
-                    name: "Poll 2",
-                    options: ["Option 4", "Option 5", "Option 6"],
-                    votes: Array(3).fill(0) // Initialize votes array with zeros
-                }
-                // Add more poll objects as needed
-            ];
-        }
-
-        // Function to create polls from the array
-        function createPolls() {
-            const pollsContainer = document.getElementById("pollsContainer");
-
-            polls.forEach(function(poll, pollIndex) {
-                const pollElement = document.createElement("div");
-                pollElement.innerHTML = "<h2>" + poll.name + "</h2>";
-
-                const optionsElement = document.createElement("div");
-                poll.options.forEach(function(option, optionIndex) {
-                    const optionButton = document.createElement("button");
-                    optionButton.className = "optionButton";
-                    optionButton.textContent = option;
-                    optionButton.addEventListener("click", function() {
-                        vote(pollIndex, optionIndex);
-                    });
-
-                    const voteCount = document.createElement("span");
-                    voteCount.className = "voteCount";
-                    voteCount.textContent = poll.votes[optionIndex];
-                    
-                    const optionContainer = document.createElement("div");
-                    optionContainer.appendChild(optionButton);
-                    optionContainer.appendChild(voteCount);
-
-                    optionsElement.appendChild(optionContainer);
-                });
-
-                pollElement.appendChild(optionsElement);
-                pollsContainer.appendChild(pollElement);
-            });
-        }
-
-        // Function to handle the vote
-        function vote(pollIndex, optionIndex) {
-            polls[pollIndex].votes[optionIndex]++; // Increment the vote count for the selected option
-            console.log("Selected option for Poll " + (pollIndex + 1) + ":", polls[pollIndex].options[optionIndex]);
-            console.log("Votes for Poll " + (pollIndex + 1) + ":", polls[pollIndex].votes);
-
-            // Update the vote count displayed on the page
-            const voteCountElements = document.getElementsByClassName("voteCount");
-            voteCountElements[pollIndex * polls[pollIndex].options.length + optionIndex].textContent = polls[pollIndex].votes[optionIndex];
-
-            // Save polls in localStorage
-            localStorage.setItem('polls', JSON.stringify(polls));
-
-            // Perform AJAX request or any other necessary action here
-        }
-
-        // Call the createPolls function to generate the polls from the array
-        createPolls();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
